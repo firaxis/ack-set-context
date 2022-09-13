@@ -21,13 +21,13 @@ async function run() {
         });
         let result = await client.request('GET', `/k8s/${clusterId}/user_config`)
         let kubeconfig = result.config
-        const runnerTempDirectory = process.env['RUNNER_TEMP']; // Using process.env until the core libs are updated
-        const kubeconfigPath = path.join(runnerTempDirectory, `kubeconfig_${Date.now()}`);
+        const workspace = process.env.GITHUB_WORKSPACE;
+        const kubeconfigPath = path.join(workspace, `kubeconfig_${Date.now()}`);
         core.debug(`Writing kubeconfig contents to ${kubeconfigPath}`);
         fs.writeFileSync(kubeconfigPath, kubeconfig);
         fs.chmodSync(kubeconfigPath, '600');
         core.exportVariable('KUBECONFIG', kubeconfigPath);
-        console.log('KUBECONFIG environment variable is set');
+        console.log('KUBECONFIG environment variable is set at ${kubeconfigPath}');
     } catch (err) {
         core.setFailed(`Failed to get kubeconfig file for Kubernetes cluster: ${err}`);
     }
