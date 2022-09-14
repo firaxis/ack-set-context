@@ -17,3 +17,8 @@ Refer to the action metadata file for details about all the inputs: [action.yml]
 
 ### Prerequisite
 Get the access-key-id and access-key-secret of Alibaba Cloud and add them as as [secrets](https://developer.github.com/actions/managing-workflows/storing-secrets/) in the GitHub repository.
+
+### Build action
+```
+docker run -it --rm --name my-running-script -v "$PWD":/usr/src/app -w /usr/src/app node:12-slim npm run all
+```
